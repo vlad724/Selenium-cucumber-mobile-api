@@ -1,6 +1,4 @@
-package myProject.config.web;
-
-import org.openqa.selenium.WebDriver;
+package config.web;
 
 import java.io.IOException;
 import java.io.InputStream;

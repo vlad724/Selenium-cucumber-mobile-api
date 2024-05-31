@@ -3,7 +3,7 @@ package myProject.StepsDefinitions;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
-import myProject.config.WebDriverConfig;
+import config.WebDriverConfig;
 import org.openqa.selenium.WebDriver;
 
 public class Hooks {

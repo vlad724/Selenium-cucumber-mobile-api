@@ -1,7 +1,7 @@
-package myProject.config;
+package config;
 
-import myProject.config.web.WebDriverFactory;
-import myProject.config.web.WebDriverProperties;
+import config.web.WebDriverFactory;
+import config.web.WebDriverProperties;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
