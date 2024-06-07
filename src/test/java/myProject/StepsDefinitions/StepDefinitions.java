@@ -1,10 +1,12 @@
 package myProject.StepsDefinitions;
 
 import config.web.WebDriverHelper;
+import config.web.WebDriverProperties;
 import io.cucumber.java.en.*;
 
 import myProject.web.Pages.OrangeHRMPage;
 import myProject.web.PagesObjects.OrangeHRMPageObjects;
+import org.json.simple.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -15,6 +17,7 @@ public class StepDefinitions {
     public StepDefinitions(){driver = Hooks.driver;}
 
     OrangeHRMPage orangeHRMPage = new OrangeHRMPage();
+    WebDriverProperties webDriverProperties =  new WebDriverProperties();
 
     @Given("^an example scenario$")
     public void anExampleScenario() {
@@ -56,7 +59,13 @@ public class StepDefinitions {
 
     @When("^the user is logged in$")
     public void theUserIsLoggedIn() {
-     orangeHRMPage.login(driver, "Admin", "admin123" );
+     JSONObject testData = orangeHRMPage.getRawTestData();
+
+     String uuid= orangeHRMPage.getTestData("uuid");
+     String today = orangeHRMPage.getTestData("today");
+     orangeHRMPage.saveInTestData("test", "Hola");
+
+     orangeHRMPage.login(driver, webDriverProperties.getMainUsername(), webDriverProperties.getMainUserPass() );
     }
 
 
@@ -68,5 +77,11 @@ public class StepDefinitions {
     @When("^Verify (.*?) user is present in the list$")
     public void verifyAdminUserIsPresentInTheList(String userName) {
        orangeHRMPage.getSystemUserList(driver, userName);
+    }
+
+    @When("^the Admin user is Logged in$")
+    public void theAdminUserIsLoggedIn() {
+
+        orangeHRMPage.loginAdminUser(driver);
     }
 }

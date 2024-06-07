@@ -12,3 +12,8 @@ Feature: Test in Orange portal
     Then The user go to system user list
     When Verify Admin user is present in the list
 
+  Scenario: With an Admin User get System Users from User list
+    When the Admin user is Logged in
+    And The user go to system user list
+    When Verify Admin user is present in the list
+

@@ -3,6 +3,7 @@ package myProject.web.Pages;
 import config.web.WebDriverHelper;
 import myProject.web.PagesObjects.OrangeHRMPageObjects;
 import org.apache.commons.lang3.StringUtils;
+import org.json.simple.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -17,6 +18,18 @@ public class OrangeHRMPage extends WebDriverHelper {
      fillPassword(driver,pass);
      clickLoginButton(driver);
  }
+
+    public void loginAdminUser(WebDriver driver){
+
+        JSONObject adminUser =  adminUserCredentials();
+
+        String user = adminUser.get("userName").toString();
+        String pass = adminUser.get("password").toString();
+
+        fillUsername(driver,user);
+        fillPassword(driver,pass);
+        clickLoginButton(driver);
+    }
 
  public void fillUsername(WebDriver driver, String user){
      WebElement userNameElm= getElement(driver, orangeHRMPageObjects.userNameLoc);

@@ -13,7 +13,9 @@ public class WebDriverProperties {
 
     public String ENVIROMENT = null;
     public String CLIENT = null;
-    public String URL_BASE = null;
+
+    public String MAIN_USERNAME= null;
+    public String MAIN_PASSWORD= null;
 
     public WebDriverProperties(){
         initConfig();
@@ -50,6 +52,16 @@ public class WebDriverProperties {
     public String getUrlBase(){
         String rawUrlBase = String.format("webdriver.%s.urlBase.%s",getEnviroment(),getClient());
         return prop.getProperty(rawUrlBase);
+    }
+
+    public String getMainUsername(){
+        String rawMainUserName = String.format("webdriver.%s.adminUser.%s",getEnviroment(),getClient());
+        return prop.getProperty(rawMainUserName);
+    }
+
+    public String getMainUserPass(){
+        String rawMainUserPass = String.format("webdriver.%s.adminUserPass.%s",getEnviroment(),getClient());
+        return prop.getProperty(rawMainUserPass);
     }
 
 }

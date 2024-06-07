@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class WebDriverHelper {
+public class WebDriverHelper extends WebDriverDataManagementHelper{
     //final Duration EXPLICIT_TIMEOUT = Duration.ofSeconds(5); darle segundos de espera a que encuentre elemento
     final Duration EXPLICIT_TIMEOUT = Duration.ofSeconds(5);
     public HashMap<String, String> windowsHandle = new HashMap<>();
