@@ -2,19 +2,18 @@ package config;
 
 import config.web.WebDriverFactory;
 import config.web.WebDriverProperties;
+import lombok.extern.java.Log;
 import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 
 
+@Log
 public class WebDriverConfig {
 
     static WebDriverProperties webDriverProperties = new WebDriverProperties();
 
     public static WebDriver initWebConfig() throws Exception {
-        Logger log = LoggerFactory.getLogger(WebDriverConfig.class);
 
         WebDriver driver;
         String platform = webDriverProperties.getPlatformName();

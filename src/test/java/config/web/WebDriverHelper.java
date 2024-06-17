@@ -1,5 +1,6 @@
 package config.web;
 
+import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@Log
 public class WebDriverHelper extends WebDriverDataManagementHelper{
     //final Duration EXPLICIT_TIMEOUT = Duration.ofSeconds(5); darle segundos de espera a que encuentre elemento
     final Duration EXPLICIT_TIMEOUT = Duration.ofSeconds(5);
@@ -35,14 +37,14 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
     public boolean isWebElementDisplayed(WebDriver driver, By element) {
         boolean isDisplayed;
         try{
-            System.out.println(String.format("waiting element: %s", element));
+            log.info(String.format("waiting element: %s", element));
             WebDriverWait wait = new WebDriverWait(driver, EXPLICIT_TIMEOUT);
             isDisplayed=wait.until(ExpectedConditions.presenceOfElementLocated(element)).isDisplayed() && wait.until(ExpectedConditions.visibilityOfElementLocated(element)).isDisplayed();
         }catch (NoSuchElementException | TimeoutException e){
             isDisplayed=false;
-            System.out.println(String.valueOf(e));
+            log.info(String.valueOf(e));
         }
-        System.out.println(String.format("%s visibility is: %s",element,isDisplayed));
+        log.info(String.format("%s visibility is: %s",element,isDisplayed));
         return isDisplayed;
     }
 
@@ -52,10 +54,10 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
             WebDriverWait wait = new WebDriverWait(driver, EXPLICIT_TIMEOUT);
             wait.until(ExpectedConditions.alertIsPresent());
             simpleAlert = driver.switchTo().alert();
-            System.out.println("Alert is present");
+            log.info("Alert is present");
 
         }catch(Exception e){
-            System.out.println("Alert is not present");
+            log.info("Alert is not present");
         }
         return simpleAlert;
     }
@@ -65,7 +67,7 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
         sleep(10);
         if (windowsHandle.containsKey(windowsName)) {
             driver.switchTo().window(windowsHandle.get(windowsName));
-            System.out.println(
+            log.info(
                     String.format(
                             "I go to Windows: %s with value: %s ",
                             windowsName, windowsHandle.get(windowsName)));
@@ -76,7 +78,7 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
                     alreadyExist = StringUtils.equalsIgnoreCase(value, winHandle);
                     if (!alreadyExist) {
                         windowsHandle.put(windowsName, winHandle);
-                        System.out.println(
+                        log.info(
                                 "The New window"
                                         + windowsName
                                         + "is saved in scenario with value"
@@ -131,7 +133,7 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
         WebElement elem =driver.findElement(locator) != null ? driver.findElement(locator) : null;
 
         if(elem!=null){
-            System.out.println("Scrolling to element: " + locator.toString());
+            log.info("Scrolling to element: " + locator.toString());
             jse.executeScript("arguments[0].scrollIntoView();", elem);
 
         }else{
@@ -144,7 +146,7 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
         JavascriptExecutor jse = (JavascriptExecutor) driver;
 
         if(elm!=null){
-            System.out.println("Scrolling to element: " + elm.toString());
+            log.info("Scrolling to element: " + elm.toString());
             jse.executeScript("arguments[0].scrollIntoView();", elm);
         }else{
             throw new SkipException("scrollToElement: Element was not present");
@@ -170,7 +172,7 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
         WebElement elem =driver.findElement(locator) != null ? driver.findElement(locator) : null;
 
         if(elem!=null){
-            System.out.println("Clicking to element: " + locator.toString());
+            log.info("Clicking to element: " + locator.toString());
             jse.executeScript("arguments[0].click();",elem);
         }else{
             throw new SkipException("jsClick: Locator was not present" + locator);
@@ -202,7 +204,7 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
 
     public void waitPageCompletelyLoaded(WebDriver driver){
         String getActual = driver.getCurrentUrl();
-        System.out.println(String.format("Checking if page is loaded..."+ getActual));
+        log.info(String.format("Checking if page is loaded..."+ getActual));
 
         Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
                 .withTimeout(EXPLICIT_TIMEOUT)

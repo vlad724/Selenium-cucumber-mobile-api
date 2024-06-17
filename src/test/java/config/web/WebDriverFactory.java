@@ -1,20 +1,23 @@
 package config.web;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import lombok.extern.java.Log;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.log4testng.Logger;
+
 
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+@Log
+
 public class WebDriverFactory {
 
-    private static Logger log = Logger.getLogger(WebDriverFactory.class);
+
 
     public static WebDriver createNewDriver(String platform, String urlBase) throws Exception {
         WebDriver driver;
@@ -50,7 +53,7 @@ public class WebDriverFactory {
             options.addArguments("--no-sandbox", "--disable-dev-shm-usage");
             driver = new ChromeDriver(options);
         } else {
-            log.debug("The Driver is not selected properly, invalid name: " + platform);
+            log.info("The Driver is not selected properly, invalid name: " + platform);
             return null;
         }
 

@@ -2,11 +2,13 @@ package myProject.web.Pages;
 
 
 import config.web.WebDriverHelper;
+import lombok.extern.java.Log;
 import myProject.web.PagesObjects.OmayoPageObjects;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+@Log
 public class OmayoPage extends WebDriverHelper {
     OmayoPageObjects omayoPageObjects = new OmayoPageObjects();
     public void iFrameMenu(WebDriver driver){
@@ -16,7 +18,7 @@ public class OmayoPage extends WebDriverHelper {
 
             WebElement divQuestionFrame1Elem = getElement(driver, omayoPageObjects.divQuestionFrame1Loc);
             if(divQuestionFrame1Elem!=null){
-                System.out.println(divQuestionFrame1Elem.getText());
+                log.info(divQuestionFrame1Elem.getText());
             }
 
         }
@@ -47,7 +49,7 @@ public class OmayoPage extends WebDriverHelper {
 
             WebElement divQuestionFrame2Elem = getElement(driver, omayoPageObjects.divQuestion2Frame1Loc);
             if(divQuestionFrame2Elem!=null){
-                System.out.println(divQuestionFrame2Elem.getText());
+                log.info(divQuestionFrame2Elem.getText());
             }
 
 
