@@ -1,20 +1,22 @@
 package config.web;
 
+import io.cucumber.datatable.DataTable;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
+import org.testng.Assert;
 import org.testng.SkipException;
 
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import static myProject.web.PagesObjects.EmergenciasPageObjects.*;
 
 @Log
 public class WebDriverHelper extends WebDriverDataManagementHelper{
@@ -220,5 +222,95 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
 
     }
 
+    public DataTable createDataTable(List<List<String>> table) {
+        DataTable data;
+        data = DataTable.create(table);
+        log.info(data.toString());
+        return data;
+    }
+
+    public void jsSendKeys(WebDriver driver,By locator, String value) {
+        JavascriptExecutor jse = (JavascriptExecutor) driver;
+        WebElement elem = getElement(driver, locator);
+        if (elem != null) {
+            jse.executeScript(String.format("arguments[0].value='%s';", value), elem);
+            log.info(locator + " value set by Js " + value);
+        } else {
+            throw new SkipException("Locator was not present " + locator);
+        }
+    }
+
+    public void click(WebDriver driver, By locator) {
+        WebElement elem = getElement(driver, locator);
+        if (elem != null) {
+            elem.click();
+            log.info(locator + " clicked");
+        } else {
+            throw new SkipException("Locator was not present " + locator);
+        }
+    }
+
+    public void selectOptionDropdownByText(WebDriver driver, By locator, String optionToSelect) {
+        log.info("Select option: " + optionToSelect + " by text");
+        WebElement selectElm = getElement(driver, locator);
+        if (selectElm != null) {
+            Select select = new Select(selectElm);
+            List<WebElement> selectListOpt = select.getOptions();
+            Optional<WebElement> matchingOption = selectListOpt.stream()
+                    .filter(option -> option.getText().equals(optionToSelect))
+                    .findFirst();
+            matchingOption.ifPresent(elm -> elm.click());
+
+        } else {
+            throw new SkipException("Locator was not present " + locator);
+        }
+
+    }
+
+    public void setInputValues(WebDriver driver, By locator, String key, String valueToBeSet) {
+        if (isWebElementDisplayed(driver, locator)) {
+            WebElement divElements = getElement(driver, locator);
+            WebElement removeElem = divElements.findElement(STEPPER_REMOVE_BUTTON);
+            WebElement addElem = divElements.findElement(STEPPER_ADD_BUTTON);
+            WebElement valueElem = null;
+
+            if (StringUtils.containsIgnoreCase(key, "Cantidad de adultos")) {
+                valueElem = divElements.findElement(STEPPER_ADULTS_VALUE_TEXT_BOX);
+            } else if (StringUtils.containsIgnoreCase(key, "Menores de 12 años")) {
+                valueElem = divElements.findElement(STEPPER_CHILDREN_VALUE_TEXT_BOX);
+            }
+
+            if (!removeElem.isDisplayed() && !addElem.isDisplayed() && !valueElem.isDisplayed()) {
+                Assert.fail(String.format("Select %s elements are not present", key));
+            }
+
+            String currentValue = getAttribute(valueElem, "value");
+
+            if (StringUtils.isNotEmpty(currentValue)
+                    && Integer.parseInt(currentValue) > Integer.parseInt(valueToBeSet)) {
+                int clicksQuantity = Integer.parseInt(currentValue) - Integer.parseInt(valueToBeSet);
+                for (int i = 0; i < clicksQuantity; ++i) {
+                    sleep(1);
+                    removeElem.click();
+                }
+
+            } else if (StringUtils.isNotEmpty(currentValue)
+                    && Integer.parseInt(currentValue) < Integer.parseInt(valueToBeSet)) {
+                int clicksQuantity = Integer.parseInt(valueToBeSet) - Integer.parseInt(currentValue);
+                for (int i = 0; i < clicksQuantity; ++i) {
+                    sleep(5);
+                    addElem.click();
+                }
+            } else {
+                log.info(key + ": already contain the input value");
+            }
+        }
+    }
+
+    public String getAttribute(WebElement locator, String attribute) {
+        String value = locator.getAttribute(attribute);
+        log.info(locator + " return the value " + value);
+        return value;
+    }
     //)
 }

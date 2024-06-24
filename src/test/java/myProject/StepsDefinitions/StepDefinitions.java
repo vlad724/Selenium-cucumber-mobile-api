@@ -4,12 +4,15 @@ import config.web.WebDriverHelper;
 import config.web.WebDriverProperties;
 import io.cucumber.java.en.*;
 
+import myProject.web.Pages.EmergenciasPage;
 import myProject.web.Pages.OrangeHRMPage;
 import myProject.web.PagesObjects.OrangeHRMPageObjects;
 import org.json.simple.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+
+import java.util.List;
 
 public class StepDefinitions {
    public WebDriver driver;
@@ -18,6 +21,8 @@ public class StepDefinitions {
 
     OrangeHRMPage orangeHRMPage = new OrangeHRMPage();
     WebDriverProperties webDriverProperties =  new WebDriverProperties();
+
+    EmergenciasPage emergenciasPage =  new EmergenciasPage();
 
     @Given("^an example scenario$")
     public void anExampleScenario() {
@@ -84,4 +89,40 @@ public class StepDefinitions {
 
         orangeHRMPage.loginAdminUser(driver);
     }
+
+ @Given("I am waiting for the first step pages to load")
+ public void iAmWaitingForTheFirstStepPagesToLoad() {
+     emergenciasPage.waitForFirstStepElements(driver);
+ }
+
+ @Then("^I am filling the following text boxes:$")
+ public void iAmFillingTheFollowingTextBoxes(List<List<String>> table) {
+
+     emergenciasPage.setFirstStepTextBoxes(driver, table);
+ }
+
+ @And("^click on (.*?) button$")
+ public void clickOnCotizáButton(String tag) {
+  emergenciasPage.clickOnButtons(driver, tag);
+ }
+
+ @And("^I wait for second step elements are loaded$")
+ public void iWaitForSecondStepElementsAreLoaded() {
+  emergenciasPage.waitForSecondStepElements(driver);
+ }
+
+ @Then("I fill following text boxes:")
+ public void iFillFollowingTextBoxes(List<List<String>> table) {
+  emergenciasPage.setFirstStepTextBoxes(driver, table);
+ }
+
+ @And("^I am waiting for the last step elements to load$")
+ public void iWaitForLastStepElementsAreLoaded() {
+  emergenciasPage.waitForLastStepElements(driver);
+ }
+
+ @Then("I am filling out the registration form with values:")
+ public void iFillRegistrationFormWithValues(List<List<String>> table) {
+  emergenciasPage.setLastStepTextBoxes(driver, table);
+ }
 }
