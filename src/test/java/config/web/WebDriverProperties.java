@@ -1,9 +1,11 @@
 package config.web;
 
+import lombok.extern.java.Log;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
+@Log
 public class WebDriverProperties {
 
     private static Properties prop = new Properties();
@@ -16,9 +18,22 @@ public class WebDriverProperties {
 
     public String MAIN_USERNAME= null;
     public String MAIN_PASSWORD= null;
+    public static String  TESTNG_ENVIROMENT, TESTNG_CLIENT;
 
     public WebDriverProperties(){
         initConfig();
+    }
+
+    public static String setTestNgEnviroment(String value) {
+        TESTNG_ENVIROMENT=value;
+        log.info(TESTNG_ENVIROMENT);
+        return TESTNG_ENVIROMENT;
+    }
+
+    public static String setTestNgClient(String value) {
+        TESTNG_CLIENT=value;
+        log.info(TESTNG_CLIENT);
+        return TESTNG_CLIENT;
     }
 
 
