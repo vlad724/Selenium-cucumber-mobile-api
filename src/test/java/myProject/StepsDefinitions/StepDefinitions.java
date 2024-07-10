@@ -2,6 +2,7 @@ package myProject.StepsDefinitions;
 
 import config.web.WebDriverHelper;
 import config.web.WebDriverProperties;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.*;
 
 import myProject.web.Pages.EmergenciasPage;
@@ -12,7 +13,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
+import java.io.IOException;
 import java.util.List;
+import static config.web.WebDriverHelper.takeScreenShot;
+import static myProject.StepsDefinitions.Hooks.scenario;
 
 public class StepDefinitions {
    public WebDriver driver;
@@ -23,6 +27,8 @@ public class StepDefinitions {
     WebDriverProperties webDriverProperties =  new WebDriverProperties();
 
     EmergenciasPage emergenciasPage =  new EmergenciasPage();
+
+
 
     @Given("^an example scenario$")
     public void anExampleScenario() {
@@ -124,5 +130,11 @@ public class StepDefinitions {
  @Then("I am filling out the registration form with values:")
  public void iFillRegistrationFormWithValues(List<List<String>> table) {
   emergenciasPage.setLastStepTextBoxes(driver, table);
+ }
+
+ @And("I saved a screenshot")
+ public void iSavedAScreenshot() throws IOException {
+   takeScreenShot(driver, scenario);
+
  }
 }

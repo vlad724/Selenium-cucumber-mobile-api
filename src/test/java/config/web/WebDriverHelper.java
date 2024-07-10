@@ -1,7 +1,9 @@
 package config.web;
 
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.Scenario;
 import lombok.extern.java.Log;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
@@ -10,11 +12,12 @@ import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 import org.testng.SkipException;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import static myProject.web.PagesObjects.EmergenciasPageObjects.*;
 
@@ -313,4 +316,38 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
         return value;
     }
     //)
+    private static String getScreenshotPath(){
+        return getCurrentPath() + "/target/screenshots/";
+    }
+    private static File getScreenshotRawFile(){
+        return new File(getScreenshotPath() + UUID.randomUUID() + ".jpg");
+    }
+
+    public static String takeScreenShot(WebDriver driver) throws IOException {
+        log.info("Saving local screenshot");
+        File newScreenShot = getScreenshotRawFile();
+        FileUtils.copyFile(((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE),newScreenShot);
+
+        return newScreenShot.getAbsolutePath();
+    }
+
+    public static void takeScreenShot(WebDriver driver, Scenario scenario) throws IOException {
+        log.info("Saving screen shot");
+        byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+
+        //DIRECTLY INTO REPORT
+        scenario.attach(screenshot, "jpg",
+                scenario.getId()
+                + "_"
+                + scenario.getName().replace(" ", "_")
+                + ".jpg");
+
+        //ATTACHING LOCAL FILE
+
+        scenario.attach(getScreenshotPath(),"jpg", takeScreenShot(driver));
+
+    }
+    public static String getCurrentPath() {
+        return Paths.get("").toAbsolutePath().toString();
+    }
 }
