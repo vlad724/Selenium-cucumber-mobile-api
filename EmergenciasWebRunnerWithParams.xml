@@ -5,7 +5,7 @@
     <test thread-count="1" name="Test" parallel="tests">
         <parameter name="browser" value="CHROME"/>
         <parameter name="webdriver.env" value="TST"/>
-        <parameter name="webdriver.client" value="emergencias"/>
+        <parameter name="webdriver.client" value="klimber"/>
         <classes>
             <class
                     name="myProject.runners.web.EmergenciasWebRunnerWithParams"/>
